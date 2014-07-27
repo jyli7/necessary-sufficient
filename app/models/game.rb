@@ -6,7 +6,7 @@ class Game < ActiveRecord::Base
 	NECESSARY_FREQUENCY = 0.4
 	SUFFICIENT_FREQUENCY = 0.2
 	NUM_INPUTS = 3
-	EVIDENCE_FRACTION = 0.5
+	EVIDENCE_FRACTION = 1
 
 	def create_inputs
 		NUM_INPUTS.times do 
@@ -15,7 +15,7 @@ class Game < ActiveRecord::Base
 	end
 
 	# How we get from input to output.
-	# Need to make it easier to configure what happens when none are necessary, none are sufficient.
+	# Need to make it easier to configure what happens when none is necessary, none is sufficient.
 	def output_on(input_statuses)
 		input_statuses.each_with_index do |input_on, i|
 			actual_input = inputs[i]

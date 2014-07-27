@@ -9,11 +9,16 @@
 <% end %>
 
 <p>EVIDENCE</p>
-<% @game.random_subset_of_evidence_with_result.each do |evidence_set| %>
-	<div>
-		<% evidence_set.each do |input| %>
-			<%= input %>
-		<% end %>
+<% @evidence_sets.each do |evidence_set| %>
+	<div class="evidence-set">
+		<div class="input-bulbs">
+			<% (0...Game::NUM_INPUTS).each do |i| %>
+				<div class="input-bulb <%= 'active' if evidence_set[i] %>"></div>
+			<% end %>
+		</div>
+		<div class="output-bulb <%= 'active' if evidence_set[Game::NUM_INPUTS] %>"></div>
 	</div>
 <% end %>
+
+
 
