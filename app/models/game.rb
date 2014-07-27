@@ -5,27 +5,50 @@ class Game < ActiveRecord::Base
 
 	NECESSARY_FREQUENCY = 0.4
 	SUFFICIENT_FREQUENCY = 0.2
+	NUM_INPUTS = 3
+	EVIDENCE_FRACTION = 0.5
 
 	def create_inputs
-		3.times do 
+		NUM_INPUTS.times do 
 			Input.create!(game_id: self.id, necessary: (rand < NECESSARY_FREQUENCY), sufficient: (rand < SUFFICIENT_FREQUENCY))
 		end
 	end
 
+	# How we get from input to output.
+	# Need to make it easier to configure what happens when none are necessary, none are sufficient.
 	def output_on(input_statuses)
 		input_statuses.each_with_index do |input_on, i|
-			actual_input = game.inputs[i]
+			actual_input = inputs[i]
 			if actual_input.sufficient && input_on
 				return true
 			elsif actual_input.necessary && !input_on
 				return false
 			end
 		end
-		return game.inputs.keep_if{|i| true }.length >= 2
+		return inputs.to_a.keep_if{|i| true }.length >= 2
 	end
 
 	def all_evidence
-		result = []
+		all_results = []
+		(0..NUM_INPUTS).each do |i|
+			seed_arr = []
+			i.times do
+				seed_arr.push(false)
+			end
+			(NUM_INPUTS - i).times do
+				seed_arr.push(true)
+			end
+			all_results.push(seed_arr.permutation.to_a.uniq)
+		end
+		all_results.flatten(1)
+	end
+
+	def random_subset_of_evidence
+		all_evidence.sample((all_evidence.length * EVIDENCE_FRACTION).floor)
+	end
+
+	def random_subset_of_evidence_with_result
+		random_subset_of_evidence.map{|arr| arr + [output_on(arr)]}
 	end
 
 end

@@ -1,6 +1,19 @@
 <h1>Pages#home</h1>
+
+<p>INPUT IDENTITIES</p>
 <% @game.inputs.each do |input| %>
+<div>
 	<%= input.necessary %>
 	<%= input.sufficient %>
+</div>
+<% end %>
+
+<p>EVIDENCE</p>
+<% @game.random_subset_of_evidence_with_result.each do |evidence_set| %>
+	<div>
+		<% evidence_set.each do |input| %>
+			<%= input %>
+		<% end %>
+	</div>
 <% end %>
 
