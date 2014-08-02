@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
 
-  get 'games/index'
-
-  get 'games/create'
-
-  get 'games/show'
+  resources :games do
+    member do
+      get 'index'
+      post 'create'
+      get 'show'
+      post 'answer'
+    end
+  end
 
   root 'pages#home'
   # The priority is based upon order of creation: first created -> highest priority.

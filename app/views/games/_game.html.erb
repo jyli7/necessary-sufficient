@@ -1,0 +1,28 @@
+<% game.inputs.each do |input| %>
+<div><%= input.necessary %></div>
+<div><%= input.sufficient %></div>
+<% end %>
+
+<%= form_for game, url: answer_game_path(game), method: :post do |f| %>
+	<%= f.fields_for :inputs do |builder| %>
+		<fieldset>
+	  	<%= builder.label :necessary, "Necessary" %>
+	  	<%= builder.check_box :necessary, checked: false %>
+	  	<%= builder.label :sufficient, "Sufficient" %>
+	  	<%= builder.check_box :sufficient, checked: false %>
+		</fieldset>
+	<% end %>
+  <%= f.submit "Create" %>
+<% end %>
+
+<p>EVIDENCE</p>
+<% evidence_sets.each do |evidence_set| %>
+	<div class="evidence-set">
+		<div class="input-bulbs">
+			<% (0...Game::NUM_INPUTS).each do |i| %>
+				<div class="input-bulb <%= 'active' if evidence_set[i] %>"></div>
+			<% end %>
+		</div>
+		<div class="output-bulb <%= 'active' if evidence_set[Game::NUM_INPUTS] %>"></div>
+	</div>
+<% end %>
