@@ -1,2 +1,8 @@
+<% if @is_correct %>
+	<p>You got it! <%= link_to "Play again!", root_path %></p>
+<% else %>
+	<p>Incorrect, sorry. Please try again.</p>
+<% end %>
+
 <p>Were you right? <%= @is_correct %></p>
 <%= render partial: 'games/game', locals: { game: @game, evidence_sets: @evidence_sets } %>
